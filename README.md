@@ -1,67 +1,111 @@
-Ethereum Network Intelligence API
-============
-[![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url]
+# vbc-stats-api
 
-This is the backend service which runs along with ethereum and tracks the network status, fetches information through JSON-RPC and connects through WebSockets to [eth-netstats](https://github.com/cubedro/eth-netstats) to feed information. For full install instructions please read the [wiki](https://github.com/ethereum/wiki/wiki/Network-Status).
+VirBiCoin Network Intelligence API — the reporter agent that runs next to a
+VirBiCoin node, reads chain data over JSON-RPC, and feeds it to a
+[vbc-stats](https://github.com/virbicoin/vbc-stats) dashboard over WebSockets.
 
+This is a fork of
+[eth-net-intelligence-api](https://github.com/cubedro/eth-net-intelligence-api),
+updated so its WebSocket client (Primus) matches the version used by the
+current vbc-stats server.
 
-## Prerequisite
-* eth, geth or pyethapp
-* node
-* npm
+> **Why this fork exists:** vbc-stats runs **Primus 8 / ws 8**. The upstream
+> agent shipped **Primus 4 / ws 1**, and the two major versions are not
+> wire-compatible — most connections were dropped before they could
+> authenticate, so reporters kept reconnecting and their node appeared stuck at
+> an old block. This fork bumps the client to Primus 8 / ws 8 to fix that.
 
+Use this agent for nodes whose client does **not** have a built-in ethstats
+reporter (e.g. OpenVirBiCoin / Ovbc). VirBiCoin's Go client (Gvbc) already
+reports directly and does not need this agent.
 
-## Installation on an Ubuntu EC2 Instance
+## Prerequisites
 
-Fetch and run the build shell. This will install everything you need: latest ethereum - CLI from develop branch (you can choose between eth or geth), node.js, npm & pm2.
+- A running VirBiCoin node (Gvbc or Ovbc) exposing JSON-RPC
+- Node.js 20+
+- npm
+
+## Installation
 
 ```bash
-bash <(curl https://raw.githubusercontent.com/cubedro/eth-net-intelligence-api/master/bin/build.sh)
+git clone https://github.com/virbicoin/vbc-stats-api.git
+cd vbc-stats-api
+npm install
 ```
-## Installation as docker container (optional)
-
-There is a `Dockerfile` in the root directory of the repository. Please read through the header of said file for
-instructions on how to build/run/setup. Configuration instructions below still apply.
 
 ## Configuration
 
-Configure the app modifying [processes.json](/eth-net-intelligence-api/blob/master/processes.json). Note that you have to modify the backup processes.json file located in `./bin/processes.json` (to allow you to set your env vars without being rewritten when updating).
+The agent is configured through environment variables. The important ones:
 
-```json
-"env":
-	{
-		"NODE_ENV"        : "production", // tell the client we're in production environment
-		"RPC_HOST"        : "localhost", // eth JSON-RPC host
-		"RPC_PORT"        : "8545", // eth JSON-RPC port
-		"LISTENING_PORT"  : "30303", // eth listening port (only used for display)
-		"INSTANCE_NAME"   : "", // whatever you wish to name your node
-		"CONTACT_DETAILS" : "", // add your contact details here if you wish (email/skype)
-		"WS_SERVER"       : "wss://rpc.ethstats.net", // path to eth-netstats WebSockets api server
-		"WS_SECRET"       : "see http://forum.ethereum.org/discussion/2112/how-to-add-yourself-to-the-stats-dashboard-its-not-automatic", // WebSockets api server secret used for login
-		"VERBOSITY"       : 2 // Set the verbosity (0 = silent, 1 = error, warn, 2 = error, warn, info, success, 3 = all logs)
-	}
-```
+| Variable          | Description                                              |
+| ----------------- | ------------------------------------------------------- |
+| `RPC_HOST`        | Node JSON-RPC host (e.g. `localhost`)                    |
+| `RPC_PORT`        | Node JSON-RPC port (e.g. `8329`)                         |
+| `LISTENING_PORT`  | Node P2P port (display only)                             |
+| `INSTANCE_NAME`   | The node name shown on the dashboard                     |
+| `CONTACT_DETAILS` | Optional contact info                                   |
+| `WS_SERVER`       | vbc-stats server URL (e.g. `wss://stats.virbicoin.com`) |
+| `WS_SECRET`       | Shared secret — must match the vbc-stats `WS_SECRET`     |
+| `VERBOSITY`       | Log level: `0` silent … `3` all logs                    |
+
+> **Security:** `WS_SECRET` is a credential. Keep it out of version control and
+> avoid pasting it into logs or chats. Rotate it if it leaks.
 
 ## Run
 
-Run it using pm2:
+### With pm2
 
 ```bash
-cd ~/bin
-pm2 start processes.json
+pm2 start app.json
 ```
 
-## Updating
+### With systemd
 
-To update the API client use the following command:
+Create `/etc/systemd/system/vbc-stats-api.service`:
+
+```ini
+[Unit]
+Description=VirBiCoin Netstats Client
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=youruser
+WorkingDirectory=/home/youruser/vbc-stats-api
+Environment=RPC_HOST=localhost
+Environment=RPC_PORT=8329
+Environment=LISTENING_PORT=28329
+Environment=INSTANCE_NAME=My-Node
+Environment=CONTACT_DETAILS=
+Environment=WS_SERVER=wss://stats.virbicoin.com
+Environment=WS_SECRET=your_shared_secret
+Environment=VERBOSITY=2
+ExecStart=/usr/bin/node /home/youruser/vbc-stats-api/app.js
+Restart=always
+RestartSec=10
+StartLimitIntervalSec=300
+StartLimitBurst=20
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then:
 
 ```bash
-~/bin/www/bin/update.sh
+sudo systemctl daemon-reload
+sudo systemctl enable --now vbc-stats-api
 ```
 
-It will stop the current netstats client processes, automatically detect your ethereum implementation and version, update it to the latest develop build, update netstats client and reload the processes.
+## Compatibility
 
-[travis-image]: https://travis-ci.org/cubedro/eth-net-intelligence-api.svg
-[travis-url]: https://travis-ci.org/cubedro/eth-net-intelligence-api
-[dep-image]: https://david-dm.org/cubedro/eth-net-intelligence-api.svg
-[dep-url]: https://david-dm.org/cubedro/eth-net-intelligence-api
+| Component | Version                                        |
+| --------- | ---------------------------------------------- |
+| Primus    | 8.x (matches the vbc-stats server)             |
+| ws        | 8.x                                            |
+| web3      | 0.x (legacy JSON-RPC client used by the agent) |
+
+## License
+
+LGPL-3.0 (inherited from the upstream project). See [LICENSE](LICENSE).

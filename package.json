@@ -1,6 +1,6 @@
 {
-  "name": "eth-net-intelligence-api",
-  "description": "Ethereum Network Intelligence API",
+  "name": "vbc-stats-api",
+  "description": "VirBiCoin Network Intelligence API (Primus 8 reporter agent for vbc-stats)",
   "version": "0.1.1",
   "private": true,
   "main": "./app.js",
@@ -13,24 +13,25 @@
     "debounce": "1.0.0",
     "debug": "2.2.0",
     "lodash": "4.1.0",
-    "primus": "4.0.5",
-    "primus-emit": "1.0.0",
-    "primus-spark-latency": "0.1.1",
+    "primus": "^8.0.9",
+    "primus-emit": "^1.0.0",
+    "primus-spark-latency": "^0.1.1",
     "web3": "0.15.3",
-    "ws": "^1.0.1"
+    "ws": "^8.21.0"
   },
   "scripts": {
     "start": "node ./app.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cubedro/eth-net-intelligence-api.git"
+    "url": "https://github.com/virbicoin/vbc-stats-api.git"
   },
-  "homepage": "https://github.com/cubedro/eth-net-intelligence-api",
+  "homepage": "https://github.com/virbicoin/vbc-stats-api",
   "bugs": {
-    "url": "https://github.com/cubedro/eth-net-intelligence-api/issues"
+    "url": "https://github.com/virbicoin/vbc-stats-api/issues"
   },
   "keywords": [
+    "virbicoin",
     "ethereum",
     "network",
     "intelligence",
