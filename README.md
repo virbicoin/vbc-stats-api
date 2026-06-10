@@ -68,6 +68,8 @@ Create `/etc/systemd/system/vbc-stats-api.service`:
 Description=VirBiCoin Netstats Client
 After=network-online.target
 Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=20
 
 [Service]
 Type=simple
@@ -84,8 +86,6 @@ Environment=VERBOSITY=2
 ExecStart=/usr/bin/node /home/youruser/vbc-stats-api/app.js
 Restart=always
 RestartSec=10
-StartLimitIntervalSec=300
-StartLimitBurst=20
 
 [Install]
 WantedBy=multi-user.target
