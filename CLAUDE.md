@@ -140,7 +140,7 @@ VirBiCoin エコシステムは以下のリポジトリで構成されていま�
 | --------------------------------- | ------------------------------------------------ | ------------------------ | -------------------------------------------------------------------------------------------- |
 | **virbicoin.com**                 | 公式 Web サイト（メインサイト）                  | `../virbicoin.com`       | [github.com/virbicoin/virbicoin.com](https://github.com/virbicoin/virbicoin.com)             |
 | **go-virbicoin**                  | メインクライアント（Gvbc, Go 実装）              | `../go-virbicoin`        | [github.com/virbicoin/go-virbicoin](https://github.com/virbicoin/go-virbicoin)               |
-| **openvirbicoin**                 | Rust クライアント（Ovbc, OpenEthereum フォーク） | `../openvirbicoin`       | [github.com/virbicoin/openvirbicoin](https://github.com/virbicoin/openvirbicoin)             |
+| **open-virbicoin**                | Rust クライアント（Ovbc, OpenEthereum フォーク） | `../openvirbicoin`       | [github.com/virbicoin/open-virbicoin](https://github.com/virbicoin/open-virbicoin)           |
 | **vbc-stats**                     | ネットワーク統計ダッシュボード                   | `../vbc-stats`           | [github.com/virbicoin/vbc-stats](https://github.com/virbicoin/vbc-stats)                     |
 | **vbc-stats-api** ← 本リポジトリ | VBC Stats 用ノードレポーターエージェント         | `../vbc-stats-api`       | [github.com/virbicoin/vbc-stats-api](https://github.com/virbicoin/vbc-stats-api)             |
 | **vbc-explorer**                  | ブロックチェーンエクスプローラー                 | `../vbc-explorer`        | [github.com/virbicoin/vbc-explorer](https://github.com/virbicoin/vbc-explorer)               |
@@ -149,7 +149,7 @@ VirBiCoin エコシステムは以下のリポジトリで構成されていま�
 
 ### 依存関係
 
-- **vbc-stats-api** → **go-virbicoin** / **openvirbicoin**: ノードの JSON-RPC からチェーン
+- **vbc-stats-api** → **go-virbicoin** / **open-virbicoin**: ノードの JSON-RPC からチェーン
   情報を取得
 - **vbc-stats-api** → **vbc-stats**: 取得した情報を Primus 8 WebSocket で送信
 - **vbc-stats** ← **go-virbicoin**: Gvbc は組み込み ethstats レポーターで直接報告するため、

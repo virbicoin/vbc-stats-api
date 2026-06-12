@@ -175,7 +175,7 @@ sudo systemctl enable --now vbc-stats-api
 | ------------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
 | **virbicoin.com**              | Official website                         | [github.com/virbicoin/virbicoin.com](https://github.com/virbicoin/virbicoin.com) |
 | **go-virbicoin**               | Main client (Gvbc, Go)                   | [github.com/virbicoin/go-virbicoin](https://github.com/virbicoin/go-virbicoin) |
-| **openvirbicoin**              | Rust client (Ovbc)                       | [github.com/virbicoin/openvirbicoin](https://github.com/virbicoin/openvirbicoin) |
+| **open-virbicoin**             | Rust client (Ovbc)                       | [github.com/virbicoin/open-virbicoin](https://github.com/virbicoin/open-virbicoin) |
 | **vbc-stats**                  | Network statistics dashboard             | [github.com/virbicoin/vbc-stats](https://github.com/virbicoin/vbc-stats) |
 | **vbc-stats-api** ← this repo  | Node reporter agent for VBC Stats        | [github.com/virbicoin/vbc-stats-api](https://github.com/virbicoin/vbc-stats-api) |
 | **vbc-explorer**               | Blockchain explorer                      | [github.com/virbicoin/vbc-explorer](https://github.com/virbicoin/vbc-explorer) |
