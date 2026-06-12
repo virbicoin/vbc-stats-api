@@ -140,11 +140,11 @@ VirBiCoin エコシステムは以下のリポジトリで構成されていま�
 | --------------------------------- | ------------------------------------------------ | ------------------------ | -------------------------------------------------------------------------------------------- |
 | **virbicoin.com**                 | 公式 Web サイト（メインサイト）                  | `../virbicoin.com`       | [github.com/virbicoin/virbicoin.com](https://github.com/virbicoin/virbicoin.com)             |
 | **go-virbicoin**                  | メインクライアント（Gvbc, Go 実装）              | `../go-virbicoin`        | [github.com/virbicoin/go-virbicoin](https://github.com/virbicoin/go-virbicoin)               |
-| **open-virbicoin**                | Rust クライアント（Ovbc, OpenEthereum フォーク） | `../openvirbicoin`       | [github.com/virbicoin/open-virbicoin](https://github.com/virbicoin/open-virbicoin)           |
+| **open-virbicoin**                | Rust クライアント（Ovbc, OpenEthereum フォーク） | `../open-virbicoin`       | [github.com/virbicoin/open-virbicoin](https://github.com/virbicoin/open-virbicoin)           |
 | **vbc-stats**                     | ネットワーク統計ダッシュボード                   | `../vbc-stats`           | [github.com/virbicoin/vbc-stats](https://github.com/virbicoin/vbc-stats)                     |
 | **vbc-stats-api** ← 本リポジトリ | VBC Stats 用ノードレポーターエージェント         | `../vbc-stats-api`       | [github.com/virbicoin/vbc-stats-api](https://github.com/virbicoin/vbc-stats-api)             |
 | **vbc-explorer**                  | ブロックチェーンエクスプローラー                 | `../vbc-explorer`        | [github.com/virbicoin/vbc-explorer](https://github.com/virbicoin/vbc-explorer)               |
-| **open-virbicoin-pool**           | マイニングプール                                 | `../open-virbicoin-pool` | [github.com/virbicoin/open-virbicoin-pool](https://github.com/virbicoin/open-virbicoin-pool) |
+| **vbc-pool**           | マイニングプール                                 | `../vbc-pool` | [github.com/virbicoin/vbc-pool](https://github.com/virbicoin/vbc-pool) |
 | **vbc-rpc**                       | RPC ノードステータス & JSON-RPC プロキシ         | `../vbc-rpc`             | [github.com/virbicoin/vbc-rpc](https://github.com/virbicoin/vbc-rpc)                         |
 
 ### 依存関係

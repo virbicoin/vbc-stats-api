@@ -179,7 +179,7 @@ sudo systemctl enable --now vbc-stats-api
 | **vbc-stats**                  | Network statistics dashboard             | [github.com/virbicoin/vbc-stats](https://github.com/virbicoin/vbc-stats) |
 | **vbc-stats-api** ← this repo  | Node reporter agent for VBC Stats        | [github.com/virbicoin/vbc-stats-api](https://github.com/virbicoin/vbc-stats-api) |
 | **vbc-explorer**               | Blockchain explorer                      | [github.com/virbicoin/vbc-explorer](https://github.com/virbicoin/vbc-explorer) |
-| **open-virbicoin-pool**        | Mining pool                              | [github.com/virbicoin/open-virbicoin-pool](https://github.com/virbicoin/open-virbicoin-pool) |
+| **vbc-pool**        | Mining pool                              | [github.com/virbicoin/vbc-pool](https://github.com/virbicoin/vbc-pool) |
 | **vbc-rpc**                    | RPC node status & JSON-RPC proxy         | [github.com/virbicoin/vbc-rpc](https://github.com/virbicoin/vbc-rpc) |
 
 ## 💬 Community
