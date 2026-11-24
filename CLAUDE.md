@@ -88,6 +88,16 @@ pm2 start app.json
 web3 0.x は `gasPrice` などを文字列で返すことがある（例: `'0'`）。受信側（VBC Stats）は
 `parseInt` で数値化するため許容されるが、新規実装では型に注意する。
 
+### 3. ノード再起動後のフィルター再設定
+
+web3 0.x の `eth.filter('latest' / 'pending')` はノード側に状態を持つ。ノードが再起動すると
+フィルターは消え、ポーリングは毎回エラーになる。停止が短く（数秒）、5 秒ごとの `getStats` が
+失敗しないまま戻った場合は `setInactive()` → `reconnectWeb3()` の経路に入らないため、
+フィルターのコールバックがエラーを受けたら `filterFailed()` から `reconnectWeb3()` を呼んで
+作り直す。以前はエラーを無視して `hash` が undefined のまま `getBlock` を呼び、
+`Invalid params: invalid type: null` を 1 秒に 2 回出し続けた（2026-11-25 の TK02。ovbc を
+6 秒で再起動した後、レポーターを再起動するまで報告が止まった）。
+
 ## コーディング規約
 
 - ES5 ベースの既存スタイルを踏襲（`var`, prototype メソッド）。アップストリーム由来の
