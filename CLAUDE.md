@@ -98,6 +98,11 @@ web3 0.x の `eth.filter('latest' / 'pending')` はノード側に状態を持�
 `Invalid params: invalid type: null` を 1 秒に 2 回出し続けた（2026-11-25 の TK02。ovbc を
 6 秒で再起動した後、レポーターを再起動するまで報告が止まった）。
 
+`reconnectWeb3()` は同期ウォッチャー（`web3.eth.isSyncing`）を残して web3 をリセットし、続く
+`init()` → `setWatches()` がもう 1 つ登録する。`setWatches()` は登録の前に、前のウォッチャー
+（`this.syncWatch`）を `stopWatching()` で止める。止めないと再接続のたびに 1 つ増え、同期の
+開始・終了を増えた数だけ処理して、フィルターも同じ組数を張る。
+
 ## コーディング規約
 
 - ES5 ベースの既存スタイルを踏襲（`var`, prototype メソッド）。アップストリーム由来の
