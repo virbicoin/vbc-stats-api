@@ -225,7 +225,7 @@ docker run -d --name vbc-stats-api --restart unless-stopped \
 
 ## 📄 License
 
-LGPL-3.0 (inherited from the upstream project) — see [LICENSE](LICENSE) for details.
+LGPL-3.0, as the upstream project declares it in its package.json. The LGPL is the GPL plus extra permissions, so both texts are included: [LICENSE](LICENSE) (GPL-3.0) and [COPYING.LESSER](COPYING.LESSER) (LGPL-3.0), the same layout as go-ethereum and go-virbicoin.
 
 ---
 

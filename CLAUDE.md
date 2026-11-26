@@ -183,4 +183,4 @@ VirBiCoin エコシステムは以下のリポジトリで構成されていま�
 
 ## ライセンス
 
-LGPL-3.0（アップストリームから継承）。詳細は [LICENSE](LICENSE) を参照。
+LGPL-3.0（アップストリームの package.json の表記を継承）。LGPL は GPL に追加の許可を足したものなので、[LICENSE](LICENSE)（GPL-3.0 の全文）と [COPYING.LESSER](COPYING.LESSER)（LGPL-3.0 の全文）の両方を置く（go-ethereum / go-virbicoin と同じ構成。2026-11 までは GPL の全文だけで、表記と食い違っていた）。なお上流の LICENSE も GPL-3.0 の全文だけで、GitHub は上流を GPL-3.0 と表示する。
