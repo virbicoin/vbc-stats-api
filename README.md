@@ -112,10 +112,28 @@ The agent is configured through environment variables:
 ### With pm2
 
 ```bash
+cp app.json.example app.json   # app.json is not tracked by git
+# set INSTANCE_NAME and WS_SECRET (and RPC_HOST / RPC_PORT if needed) in app.json
 pm2 start app.json
 ```
 
 ### With systemd
+
+Put the settings in an environment file that only root can read, so the
+secret stays out of the unit file (`systemctl cat` shows unit files to every
+user):
+
+```ini
+# /etc/vbc-stats-api.env  (chmod 600)
+RPC_HOST=localhost
+RPC_PORT=8329
+LISTENING_PORT=28329
+INSTANCE_NAME=My-Node
+CONTACT_DETAILS=
+WS_SERVER=wss://stats.virbicoin.com
+WS_SECRET=your_shared_secret
+VERBOSITY=2
+```
 
 Create `/etc/systemd/system/vbc-stats-api.service`:
 
@@ -131,14 +149,7 @@ StartLimitBurst=20
 Type=simple
 User=youruser
 WorkingDirectory=/home/youruser/vbc-stats-api
-Environment=RPC_HOST=localhost
-Environment=RPC_PORT=8329
-Environment=LISTENING_PORT=28329
-Environment=INSTANCE_NAME=My-Node
-Environment=CONTACT_DETAILS=
-Environment=WS_SERVER=wss://stats.virbicoin.com
-Environment=WS_SECRET=your_shared_secret
-Environment=VERBOSITY=2
+EnvironmentFile=/etc/vbc-stats-api.env
 ExecStart=/usr/bin/node /home/youruser/vbc-stats-api/app.js
 Restart=always
 RestartSec=10
@@ -154,6 +165,18 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now vbc-stats-api
 ```
 
+### With Docker
+
+The image is built from this repository and reads the same variables:
+
+```bash
+docker build -t vbc-stats-api .
+docker run -d --name vbc-stats-api --restart unless-stopped \
+  --network host --env-file /etc/vbc-stats-api.env vbc-stats-api
+```
+
+`--network host` lets the agent reach a node that listens on `localhost:8329`.
+
 ## 🔗 Compatibility
 
 | Component | Version                                        |
@@ -166,21 +189,22 @@ sudo systemctl enable --now vbc-stats-api
 ## 🔒 Security
 
 - `WS_SECRET` is a shared credential — never commit it; configure it via env vars.
-- `app.json` ships with placeholder values only; keep real secrets out of git.
+- `app.json` is not tracked; `app.json.example` holds placeholder values only. Keep real secrets out of git.
 - Rotate `WS_SECRET` on the server and every reporter if it is ever exposed.
 
 ## 📦 Related Repositories
 
-| Repository                     | Role                                     | URL                                                          |
-| ------------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
-| **virbicoin.com**              | Official website                         | [github.com/virbicoin/virbicoin.com](https://github.com/virbicoin/virbicoin.com) |
-| **go-virbicoin**               | Main client (Gvbc, Go)                   | [github.com/virbicoin/go-virbicoin](https://github.com/virbicoin/go-virbicoin) |
-| **open-virbicoin**             | Rust client (Ovbc)                       | [github.com/virbicoin/open-virbicoin](https://github.com/virbicoin/open-virbicoin) |
-| **vbc-stats**                  | Network statistics dashboard             | [github.com/virbicoin/vbc-stats](https://github.com/virbicoin/vbc-stats) |
-| **vbc-stats-api** ← this repo  | Node reporter agent for VBC Stats        | [github.com/virbicoin/vbc-stats-api](https://github.com/virbicoin/vbc-stats-api) |
-| **vbc-explorer**               | Blockchain explorer                      | [github.com/virbicoin/vbc-explorer](https://github.com/virbicoin/vbc-explorer) |
-| **vbc-pool**        | Mining pool                              | [github.com/virbicoin/vbc-pool](https://github.com/virbicoin/vbc-pool) |
-| **vbc-rpc**                    | RPC node status & JSON-RPC proxy         | [github.com/virbicoin/vbc-rpc](https://github.com/virbicoin/vbc-rpc) |
+| Repository                    | Role                                       | URL                                                                                  |
+| ----------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------ |
+| **virbicoin.com**             | Official website                           | [www.virbicoin.com](https://www.virbicoin.com)                                       |
+| **go-virbicoin**              | Main client (Gvbc, Go)                     | [github.com/virbicoin/go-virbicoin](https://github.com/virbicoin/go-virbicoin)       |
+| **open-virbicoin**            | Rust client (Ovbc, OpenEthereum fork)      | [github.com/virbicoin/open-virbicoin](https://github.com/virbicoin/open-virbicoin)   |
+| **vbc-explorer**              | Blockchain explorer                        | [github.com/virbicoin/vbc-explorer](https://github.com/virbicoin/vbc-explorer)       |
+| **vbc-stats**                 | Network statistics dashboard               | [github.com/virbicoin/vbc-stats](https://github.com/virbicoin/vbc-stats)             |
+| **vbc-stats-api** ← this repo | Node reporter agent for VBC Stats          | [github.com/virbicoin/vbc-stats-api](https://github.com/virbicoin/vbc-stats-api)     |
+| **vbc-pool**                  | Mining pool                                | [github.com/virbicoin/vbc-pool](https://github.com/virbicoin/vbc-pool)               |
+| **vbc-rpc**                   | RPC node status page                       | [github.com/virbicoin/vbc-rpc](https://github.com/virbicoin/vbc-rpc)                 |
+| **vbc-hash**                  | Ethash implementation (C/Go bindings)      | [github.com/virbicoin/vbc-hash](https://github.com/virbicoin/vbc-hash)               |
 
 ## 💬 Community
 
